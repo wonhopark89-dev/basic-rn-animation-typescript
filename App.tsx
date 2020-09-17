@@ -3,7 +3,7 @@ import { Animated, Text, TouchableOpacity, View } from 'react-native';
 
 const App = () => {
 	const [value, setValue] = useState(new Animated.ValueXY({ x: 0, y: 0 }));
-	const [marginLeft, setMarginLeft] = useState(new Animated.Value(0));
+	const [opacity, setOpacity] = useState(new Animated.Value(0));
 
 	const moveBall = () =>
 		Animated.spring(value, {
@@ -12,12 +12,19 @@ const App = () => {
 			useNativeDriver: false,
 		}).start();
 
-	const moveLeft = () =>
-		Animated.spring(marginLeft, {
-			toValue: 200,
-			// duration: 1000,
-			useNativeDriver: false,
+	const showBall = () => {
+		Animated.timing(opacity, {
+			toValue: 1,
+			duration: 5000,
+			useNativeDriver: true,
 		}).start();
+
+		setTimeout(() => {
+			for (let i = 0; i < 1000000; i++) {
+				console.log(i);
+			}
+		}, 1000);
+	};
 
 	return (
 		<View>
@@ -31,20 +38,22 @@ const App = () => {
 					}}
 				/>
 			</Animated.View>
+
 			<Animated.View
 				style={{
-					width: 100,
-					height: 100,
-					borderRadius: 100 / 2,
-					backgroundColor: 'cyan',
-					marginLeft: marginLeft,
+					width: 200,
+					height: 200,
+					borderRadius: 200 / 2,
+					backgroundColor: 'blue',
+					opacity: opacity,
 				}}
 			/>
 			<TouchableOpacity onPress={moveBall}>
 				<Text>Move ~ </Text>
 			</TouchableOpacity>
-			<TouchableOpacity onPress={moveLeft}>
-				<Text>Move Left ~</Text>
+
+			<TouchableOpacity onPress={showBall}>
+				<Text>Show ~ </Text>
 			</TouchableOpacity>
 		</View>
 	);
